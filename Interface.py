@@ -3,6 +3,15 @@ import tkinter
 from PIL import Image, ImageTk
 from datetime import date
 import time
+from tkinter import messagebox
+
+from employees import employeeClass
+from suppliers import supplierClass
+from categories import categoryClass
+from product import productClass
+
+from create_db import DatabaseConnection
+db=DatabaseConnection()
 
 class IMS:
     def __init__(self,root):
@@ -44,13 +53,13 @@ class IMS:
         self.icon_side=self.icon_side.resize((20,20))
         self.icon_side=ImageTk.PhotoImage(self.icon_side)
         
-        btn_employee=Button(LeftMenu,text='Employee',image=self.icon_side, compound=LEFT,padx=5,anchor='w',
+        btn_employee=Button(LeftMenu,text='Employee',image=self.icon_side, command=self.employee, compound=LEFT,padx=5,anchor='w',
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
-        btn_supplier=Button(LeftMenu,text='Supplier',image=self.icon_side, compound=LEFT,padx=5,anchor='w',
+        btn_supplier=Button(LeftMenu,text='Supplier',command=self.supplier, image=self.icon_side, compound=LEFT,padx=5,anchor='w',
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
-        btn_category=Button(LeftMenu,text='Category',image=self.icon_side, compound=LEFT,padx=5,anchor='w',
+        btn_category=Button(LeftMenu,text='Category',image=self.icon_side,command=self.categories, compound=LEFT,padx=5,anchor='w',
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
-        btn_product=Button(LeftMenu,text='Products',image=self.icon_side, compound=LEFT,padx=5,anchor='w',
+        btn_product=Button(LeftMenu,text='Products',image=self.icon_side,command=self.product, compound=LEFT,padx=5,anchor='w',
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
         btn_sales=Button(LeftMenu,text='Sales',image=self.icon_side, compound=LEFT,padx=5,anchor='w',
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
@@ -58,7 +67,7 @@ class IMS:
                             font=('times new roman',20,'bold'),bg='white',cursor='hand2', bd=3).pack(side=TOP,fill=X)
 
         #=============content=============
-        self.lbl_employee=Label(self.root,text='Total Employee\n[ 0 ]',
+        self.lbl_employee=Label(self.root,text=f'Total Employee\n[ {db.number_of_emp()} ]',
                                 bg='#1F618D',fg='white',bd=5,font=('goudy old style',20,'bold'),
                                 relief=RIDGE).place(x=300,y=120,height=150,width=300)
         self.lbl_supplier=Label(self.root,text='Total Suppliers\n[ 0 ]',
@@ -76,9 +85,28 @@ class IMS:
         #=========labele footer=======
         lbl_footer=Label(self.root,text='IMS-Inventory Management System | Developed By Bman\nFor any technical issues, contact 031xxxx6754',
                          font=('times new roman',15),bg='grey').pack(side=BOTTOM,fill=X)
+
+        #================ employee
+    def employee(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=employeeClass(self.new_win)
+
+    def supplier(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=supplierClass(self.new_win)
+
+    def categories(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=categoryClass(self.new_win)
         
+    def product(self):
+        self.new_win=Toplevel(self.root)
+        self.new_obj=productClass(self.new_win)
 
-root=Tk()
-IMS_obj=IMS(root)
-
-root.mainloop()
+        
+            
+        
+if __name__=='__main__':
+    root=Tk()
+    IMS_obj=IMS(root)
+    root.mainloop()
